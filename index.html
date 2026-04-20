@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>主页</title>
-    <!-- 配置 ES Modules 导入映射 -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
-            }
-        }
-    </script>
     <style>
         * {
             margin: 0;
@@ -69,12 +61,12 @@
             font-weight: bold;
             margin-bottom: 40px;
             transform-style: preserve-3d;
-            transition: all 0.3s ease;
+            transition: all 0.3 ease;
             text-shadow: 0 2px 10px rgba(230, 57, 124, 0.3),
                          0 0 20px rgba(230, 57, 124, 0.1);
             transform: translateZ(40px);
             opacity: 0;
-            animation: titleIn 0.8s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: titleIn 0.8 0.6 cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes titleIn {
@@ -90,12 +82,12 @@
             padding: 0 30px;
             margin: 0 auto 40px;
             transform-style: preserve-3d;
-            transition: all 0.4s ease;
+            transition: all 0.4 ease;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             width: 100%;
             opacity: 0;
             height: 70px;
-            animation: searchIn 0.8s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: searchIn 0.8 0.9 cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes searchIn {
@@ -116,7 +108,7 @@
             outline: none;
             padding: 0 10px;
             color: #1A1A1D;
-            font-size: 17px;
+            font size: 17px;
         }
 
         .search-input::placeholder {
@@ -129,7 +121,7 @@
             color: #1A1A1D;
             font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3 ease;
             padding: 10px;
         }
 
@@ -158,9 +150,9 @@
             color: #1A1A1D;
             background: #f5efea;
             border-radius: 18px;
-            transition: all 1s ease;
+            transition: all 1 ease;
             opacity: 0;
-            animation: quickIn 0.8s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: quickIn 0.8 1.2 cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes quickIn {
@@ -178,7 +170,7 @@
         .quick-icon {
             font-size: 32px;
             margin-bottom: 8px;
-            transition: all 0.8s ease;
+            transition: all 0.8 ease;
         }
 
         .quick-item:hover .quick-icon {
@@ -189,7 +181,7 @@
 
         .quick-text {
             font-size: 14px;
-            transition: all 0.8s ease;
+            transition: all 0.8 ease;
         }
 
         .quick-item:hover .quick-text {
@@ -231,12 +223,8 @@
         </div>
     </div>
 
-    <!-- 改用 ES Modules 方式加载 Three.js -->
-    <script type="module">
-        // 导入 Three.js 核心模块
-        import * as THREE from 'three';
-
-        // 原有 Three.js 逻辑全部移到这里
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script>
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -274,10 +262,7 @@
             mesh.rotation.x = -mouseY * 0.06;
             mainContainer.style.transform = `rotateY(${mouseX * 0.6}deg) rotateX(${-mouseY * 1.2}deg)`;
         });
-    </script>
 
-    <!-- 普通脚本（非 Three.js 逻辑）保留 -->
-    <script>
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         
@@ -294,9 +279,6 @@
         });
 
         window.addEventListener('resize', () => {
-            // 重新获取 Three.js 相关对象（ES Modules 作用域隔离，这里简单处理）
-            const renderer = document.querySelector('canvas').parentElement.children[0];
-            const camera = window.THREE?.camera || { aspect: 1, updateProjectionMatrix: () => {} };
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
