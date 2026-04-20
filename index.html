@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D交互主页</title>
+    <title>主页</title>
     <!-- 配置 ES Modules 导入映射 -->
     <script type="importmap">
         {
@@ -40,7 +40,7 @@
             z-index: -1;
             opacity: 0;
             transform: scale(0.8);
-            animation: bgIn 1.2s ease forwards;
+            animation: bgIn 1.2 ease forwards;
         }
 
         @keyframes bgIn {
@@ -55,9 +55,9 @@
             max-width: 700px;
             text-align: center;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease;
+            transition: transform 0.1 ease;
             opacity: 0;
-            animation: containerIn 0.8s 0.3s ease forwards;
+            animation: containerIn 0.8 0.3 ease forwards;
         }
 
         @keyframes containerIn {
