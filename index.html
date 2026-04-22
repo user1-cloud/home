@@ -231,7 +231,6 @@
         </div>
     </div>
 
-    <!-- 改用 ES Modules 方式加载 Three.js -->
     <script type="module">
         import * as THREE from 'three';
 
@@ -243,13 +242,24 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
-        camera.position.z = 15;
+        camera.position.z = 12;
 
-        const geometry = new THREE.TorusKnotGeometry(5, 1, 280, 36, 2, 3);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xE6397C,
+        const light = new THREE.DirectionalLight(0xffffff, 5);
+        light.position.set(5, 5, 8);
+        scene.add(light);
+
+        const light1 = new THREE.DirectionalLight(0xE6397C, 2);
+        light1.position.set(-5, -5, -8);
+        scene.add(light1);
+        
+        const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambient);
+
+        const geometry = new THREE.TorusGeometry(5, 1, 16, 120); // 圆环
+        const material = new THREE.MeshToonMaterial({
+            color: 0x999999,
             transparent: true,
-            opacity: 1
+            opacity: 0.95,
         });
 
         const mesh = new THREE.Mesh(geometry, material);
@@ -261,7 +271,6 @@
         }
         animate();
 
-        // ✅ 正确的窗口适配
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -276,7 +285,7 @@
             mouseY = (e.clientY - window.innerHeight/2) / 30;
 
             mesh.rotation.y = mouseX * 0.06;
-            mesh.rotation.x = -mouseY * 0.06;
+            mesh.rotation.x = mouseY * 0.06;
             mainContainer.style.transform = `rotateY(${mouseX * 0.6}deg) rotateX(${-mouseY * 1.2}deg)`;
         });
     </script>
