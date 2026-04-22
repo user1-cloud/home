@@ -8,18 +8,28 @@ const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
 container.appendChild(renderer.domElement);
 camera.position.z = 12;
 
-const light = new THREE.DirectionalLight(0xffffff, 5);
+const light = new THREE.DirectionalLight(0xffffff, 4);
 light.position.set(5, 5, 8);
+light.castShadow = true;
+light.shadow.mapSize.width = 2048;
+light.shadow.mapSize.height = 2048;
+//light.shadow.bias = -0.001;
+light.shadow.normalBias = 0.4;
+light.shadow.camera.near = 0.1;
+light.shadow.camera.far = 200;
+light.shadow.camera.left = -40;
+light.shadow.camera.right = 40;
+light.shadow.camera.top = 15;
+light.shadow.camera.bottom = -15;
 scene.add(light);
 
-const light1 = new THREE.DirectionalLight(0x00B140, 2);
-light1.position.set(-5, -5, -8);
-scene.add(light1);
-
-const ambient = new THREE.AmbientLight(0xffffff, 0.2);
+const ambient = new THREE.AmbientLight(0xffffff, 1.8);
 scene.add(ambient);
 
 let mesh;
@@ -38,20 +48,50 @@ let faceInitial = {};
 // 大笑状态
 let isLaughing = false;
 
+function createCartoonGradientMap() {
+  const size = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = 1;
+  const ctx = canvas.getContext('2d');
+
+  const grd = ctx.createLinearGradient(0, 0, size, 0);
+  // 亮部
+  grd.addColorStop(0.0, '#222222');
+  // 灰部（一级阴影）
+  grd.addColorStop(0.5, '#909090');
+  grd.addColorStop(0.7, '#b5b5b5');
+  // 暗部（二级阴影）
+  grd.addColorStop(1.0, '#d1d1d1');
+
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, size, 1);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.minFilter = THREE.NearestFilter;
+  tex.magFilter = THREE.NearestFilter;
+  return tex;
+}
+
 const loader = new GLTFLoader();
 loader.load('./model/我是奶龙.glb', (gltf) => {
     mesh = gltf.scene;
     mesh.traverse((child) => {
-        if (child.isMesh && child.material) {
-            const oldMat = child.material;
-            child.material = new THREE.MeshToonMaterial({
-                map: oldMat.map,
-                gradientMap: null,
-                transparent: oldMat.transparent,
-                opacity: 0.95,
-            });
-            child.material.needsUpdate = true;
-            child.geometry.computeVertexNormals();
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            if (child.material){
+                const oldMat = child.material;
+                child.material = new THREE.MeshToonMaterial({
+                    map: oldMat.map,
+                    gradientMap: null,
+                    transparent: oldMat.transparent,
+                });
+                child.material.skinning = true;
+
+                child.material.needsUpdate = true;
+                child.geometry.computeVertexNormals();
+            }
         }
 
         if (child.isBone) {
@@ -91,6 +131,7 @@ loader.load('./model/我是奶龙.glb', (gltf) => {
     mesh.translateY(-30);
     mesh.translateZ(-24);
     mesh.scale.set(20, 20, 20);
+
     scene.add(mesh);
 
     // 启动随机大笑
