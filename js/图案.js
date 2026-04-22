@@ -21,7 +21,7 @@ scene.add(light1);
 const ambient = new THREE.AmbientLight(0xffffff, 0.2);
 scene.add(ambient);
 
-const geometry = new THREE.TorusGeometry(5, 1, 16, 120); // 圆环
+const geometry = new THREE.TorusGeometry(5, 1, 80, 180); // 圆环
 const material = new THREE.MeshToonMaterial({
     color: 0x999999,
     transparent: true,
