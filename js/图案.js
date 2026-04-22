@@ -170,31 +170,31 @@ document.addEventListener('mousemove', (e) => {
     mouseX = (e.clientX - window.innerWidth / 2) / 30;
     mouseY = (e.clientY - window.innerHeight / 2) / 30;
 
-    if (spine006) spine006.rotation.x = mouseY * 0.015 + Math.PI / 4;
-    if (spine006) spine006.rotation.y = mouseX * 0.010;
+    if (spine006) spine006.rotation.x = mouseY * 0.018 + Math.PI / 4;
+    if (spine006) spine006.rotation.y = mouseX * 0.018;
 
-    if (spine005) spine005.rotation.x = mouseY * 0.015 + Math.PI / 8;
+    if (spine005) spine005.rotation.x = mouseY * 0.017 + Math.PI / 8;
     if (spine005) spine005.rotation.y = mouseX * 0.010;
 
-    if (spine004) spine004.rotation.x = mouseY * 0.015;
+    if (spine004) spine004.rotation.x = mouseY * 0.020;
     if (spine004) spine004.rotation.y = mouseX * 0.010;
 
     if (spine003) spine003.rotation.x = mouseY * 0.015;
-    if (spine003) spine003.rotation.y = mouseX * 0.010;
+    if (spine003) spine003.rotation.y = mouseX * 0.020;
 
     if (spine002) spine002.rotation.x = mouseY * 0.015;
-    if (spine002) spine002.rotation.y = mouseX * 0.015;
+    if (spine002) spine002.rotation.y = mouseX * 0.012;
 
-    if (spine001) spine001.rotation.x = mouseY * 0.020;
+    if (spine001) spine001.rotation.x = mouseY * 0.010;
     if (spine001) spine001.rotation.y = mouseX * 0.015;
 
     if (spine) spine.rotation.x = mouseY * 0.025;
-    if (spine) spine.rotation.y = mouseX * 0.020;
+    if (spine) spine.rotation.y = mouseX * 0.010;
 
-    const isMouseLowerHalf = e.clientY > window.innerHeight / 2.2;
+    const isMouseLowerHalf = e.clientY > window.innerHeight / 2.4;
     let armAngle = 0;
     if (isMouseLowerHalf) {
-        const downFactor = (e.clientY - window.innerHeight / 2.2) / (window.innerHeight / 2.2);
+        const downFactor = (e.clientY - window.innerHeight / 2.4) / (window.innerHeight / 2.4);
         armAngle = downFactor * 0.9;
         if (upper_armR) upper_armR.rotation.z = upper_armR_rotation - armAngle;
         if (upper_armL) upper_armL.rotation.z = upper_armL_rotation + armAngle;
